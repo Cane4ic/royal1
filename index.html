@@ -6667,7 +6667,48 @@ if (wheelBackBtn) {
     loadBalance();
   });
 
+const debugEl = document.getElementById("debug");
 
+async function loadBalance() {
+  const tg = window.Telegram?.WebApp;
+  const tgUserId = tg?.initDataUnsafe?.user?.id || null;
+
+  console.log("Telegram user id:", tgUserId);
+  if (debugEl) debugEl.textContent = "tg_id = " + tgUserId;
+
+  if (!tgUserId) {
+    console.warn("Нет tgUserId – WebApp не внутри Telegram?");
+    return;
+  }
+
+  try {
+    const resp = await fetch("https://royal-api-8o0t.onrender.com/api/balance", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ tg_id: tgUserId }),
+    });
+
+    if (!resp.ok) {
+      const t = await resp.text();
+      console.error("API error", resp.status, t);
+      if (debugEl) debugEl.textContent = `API error: ${resp.status}`;
+      return;
+    }
+
+    const data = await resp.json();
+    console.log("API response:", data);
+
+    if (debugEl) debugEl.textContent = `OK: ${data.balance_usdt}`;
+
+    const balanceElement = document.querySelector(".wallet-balance");
+    if (balanceElement && typeof data.balance_usdt === "number") {
+      balanceElement.textContent = data.balance_usdt.toFixed(2);
+    }
+  } catch (e) {
+    console.error("fetch error", e);
+    if (debugEl) debugEl.textContent = "fetch error: " + e;
+  }
+}
 
 
 
@@ -6682,5 +6723,8 @@ if (wheelBackBtn) {
   <div class="game-loader-spinner"></div>
   <div class="game-loader-text">Загрузка…</div>
 </div>
+
+<div id="debug" style="position:fixed;bottom:8px;left:8px;
+     font-size:12px;color:#888;z-index:9999;"></div>
 </body>
 </html>
