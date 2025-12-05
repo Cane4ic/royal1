@@ -3676,6 +3676,259 @@
   opacity: 0.9;
 }
 
+/* общая обёртка страницы с колесом */
+.wheel-wrapper {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px 0 40px;
+}
+
+/* сама «карта» как у Royal Mines */
+.wheel-game-frame {
+  background: #111;
+  border-radius: 18px;
+  border: 1px solid #272727;
+  box-shadow: 0 18px 40px rgba(0,0,0,.7);
+  padding: 20px 24px 24px;
+}
+
+/* если у тебя есть .mines-game-frame в CSS,
+   можно просто объединить:
+   .mines-game-frame, .wheel-game-frame { ... } */
+
+/* шапка карты */
+.wheel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.wheel-title-box {
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.wheel-header-right {
+  font-size: 14px;
+  color: var(--text-soft, #aaa);
+}
+
+.wheel-status {
+  font-size: 14px;
+  color: var(--text-soft, #aaa);
+}
+
+/* ИСТОРИЯ СВЕРХУ, как цветные квадратики */
+.wheel-history {
+  display: flex;
+  gap: 4px;
+  justify-content: center;
+  max-width: 420px;
+  overflow: hidden;
+}
+
+.wheel-history-item {
+  width: 12px;
+  height: 18px;
+  border-radius: 3px;
+  background: #444;
+}
+
+/* цвета истории */
+.wheel-history-x2 { background: #555; }       /* серый */
+.wheel-history-x3 { background: #e14242; }    /* красный */
+.wheel-history-x5 { background: #3b7cff; }    /* синий */
+.wheel-history-x50 { background: #35d659; }   /* зеленый */
+
+/* блок с колесом */
+.wheel-board {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.wheel-container {
+  position: relative;
+  width: 320px;
+  height: 320px;
+}
+
+.wheel {
+  position: absolute;
+  inset: 0;          /* top/right/bottom/left: 0 */
+  margin: auto;      /* центр по контейнеру */
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 6px solid #10151f;
+  background: radial-gradient(circle at center, #060b14 0, #020309 60%, #020309 100%);
+  box-shadow:
+    0 0 0 4px #151a25,
+    0 0 0 10px #050811;
+  transition: transform 3s cubic-bezier(.1,.5,.1,1);
+  transform-origin: 50% 50%;
+  /* transform: rotate(0deg); — можешь вообще убрать, не обязательно */
+}
+
+.wheel-pointer {
+  position: absolute;
+  left: 50%;
+  top: -18px;           /* стрелка чуть над кругом */
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 14px solid transparent;
+  border-right: 14px solid transparent;
+  border-bottom: 20px solid #ffd94a; /* треугольник смотрит ВНИЗ */
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,.7));
+  z-index: 3;
+}
+
+.wheel-segment {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 18px;      /* или 20px — по вкусу */
+  height: 10px;     /* подбирай под дизайн */
+  border-radius: 3px;
+  transform-origin: 50% 50%;
+  pointer-events: none;
+}
+
+/* внутренний круг с BANK */
+.wheel-inner {
+  position: absolute;
+  width: 62%;
+  height: 62%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle at top, #1a2233 0, #05070d 60%);
+  box-shadow: inset 0 0 15px rgba(0,0,0,.9);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.wheel-bank-label {
+  font-size: 14px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.5);
+  margin-bottom: 4px;
+}
+
+.wheel-bank-value {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* нижняя панель управления */
+.wheel-controls {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+/* карточка ставки — по стилю как bet-карты у Mines */
+.wheel-bet-card {
+  flex: 1 1 260px;
+  background: #181818;
+  border-radius: 14px;
+  padding: 16px 18px;
+  border: 1px solid #262626;
+}
+
+.wheel-bet-title {
+  font-size: 13px;
+  color: var(--text-soft, #aaa);
+  margin-bottom: 8px;
+}
+
+.wheel-bet-main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.wheel-bet-value {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.wheel-bet-minmax {
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid #333;
+  background: #202020;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.wheel-bet-quick-row {
+  display: flex;
+  gap: 8px;
+}
+
+.wheel-quick-bet {
+  flex: 1;
+  padding: 6px 0;
+  border-radius: 999px;
+  border: 1px solid #333;
+  background: #202020;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.wheel-bet-hidden {
+  display: none;
+}
+
+/* правая часть панели: выбор цвета + кнопка */
+.wheel-panel-right {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* выбор цвета */
+.wheel-color-select {
+  display: flex;
+  gap: 8px;
+}
+
+.wheel-color-btn {
+  flex: 1;
+  padding: 8px 0;
+  border-radius: 999px;
+  border: 1px solid #333;
+  background: #202020;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.wheel-color-btn.active {
+  border-color: #fff;
+}
+
+/* кнопка Играть */
+.wheel-play-btn {
+  padding: 10px 22px;
+  border-radius: 999px;
+  border: none;
+  background: #42c94a;
+  font-weight: 600;
+  cursor: pointer;
+}
 
   </style>
 </head>
@@ -3905,8 +4158,10 @@
     
   </div>
 
-  <div class="game-card">
-    <div class="game-thumb"><img src="img/game2.jpg"></div>
+  <div class="game-card" data-open-game="wheel">
+    <div class="game-thumb">
+      <img src="img/game2.jpg" alt="Wheel Royal">
+      </div>
     
   </div>
 
@@ -4817,6 +5072,83 @@
     </div>
   </div>
 
+  <!-- WHEEL GAME PAGE -->
+<main class="page-content" id="wheelRoyalPage" style="display:none;">
+  <button class="profile-back-btn" id="wheelBackBtn">← Назад в лобби</button>
+
+  <section class="wheel-wrapper">
+    <div class="wheel-game-frame">
+      <!-- верхняя панель как у Mines -->
+      <div class="wheel-header">
+        <div class="wheel-title-box">Wheel Royal</div>
+        <div class="wheel-header-right">
+          <div class="wheel-status" id="wheelStatus">Сделай ставку и выбери множитель</div>
+        </div>
+      </div>
+
+      <!-- само колесо -->
+<div class="wheel-board">
+
+  <!-- ИСТОРИЯ ВЫПАВШИХ ЦВЕТОВ -->
+  <div class="wheel-history" id="wheelHistory"></div>
+
+  <!-- КОНТЕЙНЕР КОЛЕСА -->
+  <div class="wheel-container">
+    <!-- стрелка над колесом -->
+    <div class="wheel-pointer"></div>
+
+    <!-- РОТОР: только круг + квадраты -->
+    <div class="wheel" id="wheel"></div>
+
+    <!-- Статичный центр -->
+    <div class="wheel-inner">
+      <div class="wheel-bank-label">BANK</div>
+      <div class="wheel-bank-value">
+        <span id="wheelBankValue">0</span> CR
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+      <!-- панель управления под колесом -->
+      <div class="wheel-controls">
+        <div class="wheel-bet-card">
+          <div class="wheel-bet-title">Ставка</div>
+
+          <div class="wheel-bet-main">
+            <button class="wheel-bet-minmax" data-role="min">MIN</button>
+            <div class="wheel-bet-value"><span id="wheelBetDisplay">10</span> CR</div>
+            <button class="wheel-bet-minmax" data-role="max">MAX</button>
+          </div>
+
+          <div class="wheel-bet-quick-row">
+            <button class="wheel-quick-bet" data-quick="10">10</button>
+            <button class="wheel-quick-bet" data-quick="25">25</button>
+            <button class="wheel-quick-bet" data-quick="50">50</button>
+            <button class="wheel-quick-bet" data-quick="100">100</button>
+          </div>
+
+          <input id="wheelBet" class="wheel-bet-hidden" type="number" value="10">
+        </div>
+
+        <div class="wheel-panel-right">
+          <div class="wheel-color-select">
+            <button class="wheel-color-btn" data-color="x2">x2</button>
+            <button class="wheel-color-btn" data-color="x3">x3</button>
+            <button class="wheel-color-btn" data-color="x5">x5</button>
+            <button class="wheel-color-btn" data-color="x50">x50</button>
+          </div>
+
+          <button class="wheel-play-btn" id="wheelPlayBtn">Играть</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+
   <main class="page-content" id="minesRoyalPage" style="display:none;">
 
   <button class="profile-back-btn" id="minesBackBtn">← Назад в лобби</button>
@@ -5361,6 +5693,7 @@ const crashRoyalPage   = document.getElementById('crashRoyalPage');
 const chickenRoadPage  = document.getElementById('chickenRoadPage');
 const slotRoyalPage    = document.getElementById('slotRoyalPage');
 const minesRoyalPage   = document.getElementById('minesRoyalPage');
+const wheelRoyalPage   = document.getElementById('wheelRoyalPage');
 const gameLoaderOverlay = document.getElementById('gameLoaderOverlay');
 
 
@@ -5371,7 +5704,8 @@ function showOnlyPage(pageEl) {
     crashRoyalPage,
     chickenRoadPage,
     slotRoyalPage,
-    minesRoyalPage
+    minesRoyalPage,
+    wheelRoyalPage
   ];
 
   pages.forEach(p => {
@@ -6061,7 +6395,261 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 
 
+// WHEEL GAME
+const wheelPage    = document.getElementById("wheelRoyalPage");
+const wheelBackBtn = document.getElementById("wheelBackBtn");
 
+const wheelEl      = document.getElementById("wheel");
+const wheelPlayBtn = document.getElementById("wheelPlayBtn");
+const wheelStatus  = document.getElementById("wheelStatus");
+
+const wheelBetInput   = document.getElementById("wheelBet");
+const wheelBetDisplay = document.getElementById("wheelBetDisplay");
+
+const wheelColorBtns   = document.querySelectorAll(".wheel-color-btn");
+const wheelHistoryEl   = document.getElementById("wheelHistory");
+const wheelBankValueEl = document.getElementById("wheelBankValue");
+
+let wheelHistory       = [];
+let wheelSelectedColor = null;
+let wheelSegmentList   = [];
+let wheelSpinning      = false;
+let wheelAngle         = 0; // <–– ЭТА
+
+
+
+// СЕКТОРА КОЛЕСА
+const sectors = [
+  { color: "x2",  value: 2,  count: 24 },
+  { color: "x3",  value: 3,  count: 16 },
+  { color: "x5",  value: 5,  count: 10 },
+  { color: "x50", value: 50, count: 2 }
+];
+
+// построить колесо (НОВАЯ версия, не трогаем .wheel-inner)
+function buildWheel() {
+  if (!wheelEl) return;
+
+  wheelEl.innerHTML = "";
+
+  let fullList = [];
+  sectors.forEach(sec => {
+    for (let i = 0; i < sec.count; i++) {
+      fullList.push(sec.color);
+    }
+  });
+
+  // перемешиваем
+  for (let i = fullList.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [fullList[i], fullList[j]] = [fullList[j], fullList[i]];
+  }
+
+  const total = fullList.length;
+  const anglePer = 360 / total;
+
+  // 🔥 ВОТ ЭТО ТЕПЕРЬ ГЛАВНОЕ
+  const radius = 144;  // подгоняй 138–150 пока не попадёт идеально
+
+  for (let i = 0; i < total; i++) {
+    const color = fullList[i];
+    const seg   = document.createElement("div");
+    seg.className = "wheel-segment";
+
+    const angle = -90 + i * anglePer;
+
+    seg.style.transform = `
+      translate(-50%, -50%)
+      rotate(${angle}deg)
+      translate(0, -${radius}px)
+    `;
+
+    if (color === "x2")  seg.style.background = "#555";
+    if (color === "x3")  seg.style.background = "#e14242";
+    if (color === "x5")  seg.style.background = "#3b7cff";
+    if (color === "x50") seg.style.background = "#35d659";
+
+    wheelEl.appendChild(seg);
+  }
+
+  wheelSegmentList = fullList;
+}
+
+
+
+// не забудь вызвать один раз при инициализации:
+buildWheel();
+
+
+
+// ===== ИСТОРИЯ ВЫПАДЕНИЙ =====
+function addToWheelHistory(color) {
+  wheelHistory.unshift(color);
+  if (wheelHistory.length > 28) {
+    wheelHistory.pop();
+  }
+  renderWheelHistory();
+}
+
+function renderWheelHistory() {
+  if (!wheelHistoryEl) return;
+  wheelHistoryEl.innerHTML = "";
+
+  wheelHistory.forEach(c => {
+    const item = document.createElement("div");
+    item.className = "wheel-history-item wheel-history-" + c;
+    wheelHistoryEl.appendChild(item);
+  });
+}
+
+// BANK в центре
+function setWheelBankValue(val) {
+  if (!wheelBankValueEl) return;
+  wheelBankValueEl.textContent = val.toFixed ? val.toFixed(0) : val;
+}
+
+// ===== ЛОГИКА ВЫБОРА ЦВЕТА =====
+wheelColorBtns.forEach(btn => {
+  btn.addEventListener("click", () => {
+    wheelColorBtns.forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    wheelSelectedColor = btn.dataset.color;
+  });
+});
+
+
+
+// ===== ВРАЩЕНИЕ КОЛЕСА (НОРМАЛЬНОЕ) =====
+wheelPlayBtn.addEventListener("click", () => {
+  if (wheelSpinning) return;
+  if (!wheelSelectedColor) {
+    showTopToast("Выбери множитель");
+    return;
+  }
+
+  let bet = parseFloat(wheelBetInput.value) || 0;
+  if (bet <= 0) {
+    showTopToast("Минимальная ставка 1");
+    return;
+  }
+  if (bet > playerBalance) {
+    showTopToast("Недостаточно средств");
+    return;
+  }
+
+  changePlayerBalance(-bet);
+
+  wheelSpinning = true;
+  wheelStatus.textContent = "Крутим колесо…";
+
+  const total    = wheelSegmentList.length;
+  const anglePer = 360 / total;
+
+  // просто крутим на несколько полных оборотов + случайный угол
+  const extraTurns   = 6;                       // количество полных кругов
+  const randomOffset = Math.random() * 360;     // случайный угол внутри круга
+  const targetAngle  = wheelAngle + extraTurns * 360 + randomOffset;
+
+  wheelAngle = targetAngle;
+  wheelEl.style.transform = `rotate(${wheelAngle}deg)`;
+
+  setTimeout(() => {
+    // нормализуем угол в [0; 360)
+    let a = wheelAngle % 360;
+    if (a < 0) a += 360;
+
+    // так как первый сегмент мы рисовали под углом -90,
+    // а стрелка тоже смотрит вверх, победный индекс:
+    // i ≡ -a / anglePer (mod total)
+    const winningIndex = (total - Math.floor((a + anglePer /2) / anglePer)) % total;
+
+    const resultColor = wheelSegmentList[winningIndex];
+    const sec = sectors.find(s => s.color === resultColor);
+
+    // история
+    addToWheelHistory(sec.color);
+
+    if (sec.color === wheelSelectedColor) {
+      const win = bet * sec.value;
+      changePlayerBalance(win);
+      wheelStatus.textContent = `Вы выиграли ×${sec.value}! +${win} CR`;
+      setWheelBankValue(win);
+    } else {
+      wheelStatus.textContent = "Проигрыш";
+      setWheelBankValue(0);
+    }
+
+    wheelSpinning = false;
+    updateAllBalancesUI();
+  }, 3200);
+});
+
+
+
+
+// ===== ПЕРЕХОДЫ МЕЖДУ СТРАНИЦАМИ =====
+const wheelCards = document.querySelectorAll('[data-open-game="wheel"]');
+
+wheelCards.forEach(card => {
+  card.addEventListener("click", () => {
+    showOnlyPage(wheelPage);
+  });
+});
+
+if (wheelBackBtn) {
+  wheelBackBtn.addEventListener("click", () => {
+    showOnlyPage(mainPage);
+  });
+}
+
+  // Берём объект Telegram WebApp
+  const tg = window.Telegram && window.Telegram.WebApp;
+
+  // ID пользователя из Telegram (очень важно!)
+  const tgUserId = tg?.initDataUnsafe?.user?.id || null;
+
+  console.log("Telegram user id:", tgUserId);
+
+  async function loadBalance() {
+    if (!tgUserId) {
+      console.warn("Нет tgUserId – WebApp не внутри Telegram?");
+      return;
+    }
+
+    try {
+      const resp = await fetch("https://royal-api-8o0t.onrender.com/api/balance", {  // <-- поменяешь на свой Render URL
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ tg_id: tgUserId })
+      });
+
+      if (!resp.ok) {
+        console.warn("Ошибка ответа API:", resp.status);
+        return;
+      }
+
+      const data = await resp.json();
+      const balance = Number(data.balance || 0);
+
+      const el = document.querySelector(".wallet-balance");
+      if (el) {
+        // допустим, хочешь показывать "123.45 USDT"
+        el.textContent = balance.toFixed(2) + " USDT";
+      }
+    } catch (err) {
+      console.error("Ошибка запроса баланса:", err);
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    // Рекомендуется инициализировать WebApp
+    if (tg) {
+      tg.ready();
+    }
+    loadBalance();
+  });
 
 
 
