@@ -5350,13 +5350,29 @@ function updateAllBalancesUI() {
     const withdrawBalanceCode = document.getElementById('withdrawBalanceCode');
 
      // ===== ГЛОБАЛЬНЫЙ БАЛАНС ИГРОКА =====
-let playerBalance = 1000; // стартовый демо-баланс
+// ===== ГЛОБАЛЬНЫЙ БАЛАНС ИГРОКА =====
+let playerBalance = 0; // стартовый, реальный баланс подтянем из API
 
 // элементы, где этот баланс показываем
 const headerBalanceEl = document.querySelector('.wallet-balance'); // в шапке
 const slotBalanceEl   = document.getElementById('slotBalance');
 const crashBalanceEl  = document.getElementById('crashBalance');
 const chickenBalanceEl = document.getElementById('chickenBalance');
+
+function updateAllBalancesUI() {
+  if (headerBalanceEl) {
+    headerBalanceEl.textContent = playerBalance.toFixed(2) + ' USDT';
+  }
+  if (slotBalanceEl) {
+    slotBalanceEl.textContent = playerBalance.toFixed(2);
+  }
+  if (crashBalanceEl) {
+    crashBalanceEl.textContent = playerBalance.toFixed(2);
+  }
+  if (chickenBalanceEl) {
+    chickenBalanceEl.textContent = playerBalance.toFixed(2);
+  }
+}
 
 function changePlayerBalance(delta) {
   playerBalance += delta;
@@ -6611,37 +6627,37 @@ if (wheelBackBtn) {
   console.log("Telegram user id:", tgUserId);
 
   async function loadBalance() {
-    if (!tgUserId) {
-      console.warn("Нет tgUserId – WebApp не внутри Telegram?");
+  if (!tgUserId) {
+    console.warn("Нет tgUserId – WebApp не внутри Telegram?");
+    return;
+  }
+
+  try {
+    const resp = await fetch("https://royal-api-8o0t.onrender.com/api/balance", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ tg_id: tgUserId })
+    });
+
+    if (!resp.ok) {
+      console.warn("Ошибка ответа API:", resp.status);
       return;
     }
 
-    try {
-      const resp = await fetch("https://royal-api-8o0t.onrender.com/api/balance", {  // <-- поменяешь на свой Render URL
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ tg_id: tgUserId })
-      });
+    const data = await resp.json();
+    const balance = Number(data.balance || 0);
 
-      if (!resp.ok) {
-        console.warn("Ошибка ответа API:", resp.status);
-        return;
-      }
+    // тут главное:
+    playerBalance = balance;
+    updateAllBalancesUI();
 
-      const data = await resp.json();
-      const balance = Number(data.balance || 0);
-
-      const el = document.querySelector(".wallet-balance");
-      if (el) {
-        // допустим, хочешь показывать "123.45 USDT"
-        el.textContent = balance.toFixed(2) + " USDT";
-      }
-    } catch (err) {
-      console.error("Ошибка запроса баланса:", err);
-    }
+  } catch (err) {
+    console.error("Ошибка запроса баланса:", err);
   }
+}
+
 
   document.addEventListener("DOMContentLoaded", () => {
     // Рекомендуется инициализировать WebApp
